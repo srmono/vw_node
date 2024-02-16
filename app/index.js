@@ -1,11 +1,31 @@
 const express = require('express');
 const connetDB = require('./config/db')
+const rateLimit = require('express-rate-limit');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const swaggerOptions = require('./swaggerOptions');
 
 //initiate app
 const app = express()
 
 //Connect Database
 connetDB();
+
+//Swagger config
+const specs = swaggerJsdoc(swaggerOptions);
+
+// Serve Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+
+//Rate Limit
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 requests per windowMs
+  });
+
+
+app.use(limiter);
 
 //Initiate Middleware
 app.use(express.json())

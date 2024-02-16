@@ -3,6 +3,8 @@ const router = express.Router();
 const {check, validationResult} = require('express-validator');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 //const normalize = require('normalize-url'); 
 
 
@@ -21,6 +23,15 @@ router.get( "/", async (req, res) => {
 // @route   POST api/users
 // @Desc    Register User
 // @Access  Public
+/**
+ * @swagger
+ * /example:
+ *   get:
+ *     description: Get a list of examples
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 router.post('/',
     [
         check("name", "Name is Required").not().isEmpty(),
@@ -67,13 +78,24 @@ router.post('/',
         })
         const salt = await bcrypt.genSalt(10)
         user.password = await bcrypt.hash(password, salt)
+        
         await user.save()
+
         const payload = {
             user: {
                 id: user.id
             }
         }
-        //res.json(data)
+        
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            {expiresIn: '5 Days'},
+            (err, token) => {
+                if(err) throw err;
+                res.json({token})
+            }
+        )
 
     } catch (error) {
         console.error(err.message);
