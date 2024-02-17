@@ -11,7 +11,7 @@ const app = express()
 //Connect Database
 connetDB();
 
-//Swagger config
+//Swagger config js doc
 const specs = swaggerJsdoc(swaggerOptions);
 
 // Serve Swagger UI

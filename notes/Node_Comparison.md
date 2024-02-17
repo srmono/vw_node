@@ -25,7 +25,6 @@ Node.js is a runtime environment that allows you to execute JavaScript on the se
 - **Microservices Architecture:** Often used in microservices architectures for scalability and lightweight nature.
 
 ### Benefits of Node.js in Real-Time Web Applications:
-
 - **Scalability:** Efficiently handles a large number of concurrent connections.
 - **Performance:** Known for fast execution, suitable for low-latency real-time applications.
 - **Single Language:** Allows using the same language (JavaScript) throughout the entire stack if used on the client and server sides.
